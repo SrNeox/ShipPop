@@ -1,0 +1,13 @@
+{
+    "intExample": 5,
+    "strExample": "Hello!",
+    "boolExample": [
+        false,
+        false,
+        false,
+        false
+    ],
+    "idSave": 2,
+    "Score": 72,
+    "_isTutorialShow": true
+}

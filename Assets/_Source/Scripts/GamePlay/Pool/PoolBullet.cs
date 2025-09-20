@@ -1,0 +1,1 @@
+public class PoolBullet : PoolObject<Bullet> { }
