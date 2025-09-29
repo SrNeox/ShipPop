@@ -3,7 +3,7 @@ using YG;
 
 public class UIStateMachine : MonoBehaviour
 {
-    public enum UIState { Tutorial, Settings, MainMenu, GameOver, ActiveGameUi, StartMenu, LeaderBoard, MobileControl, PlayerInfo }
+    public enum UIState { Tutorial, Settings, MainMenu, GameOver, ActiveGameUi, StartMenu, LeaderBoard, MobileControl, PlayerInfo, Continue }
 
     [Header("Canvas References")]
     [SerializeField] private Canvas _startMenuCanvas;
@@ -15,10 +15,12 @@ public class UIStateMachine : MonoBehaviour
     [SerializeField] private Canvas _leaderBoard;
     [SerializeField] private Canvas _mobileControl;
     [SerializeField] private Canvas _playerInfo;
-
+    [SerializeField] private Canvas _continue;
     [SerializeField] private AudioSource _audioSource;
 
     private UIState _currentState = UIState.Tutorial;
+
+    public UIState CurrentUI => _currentState;
 
     private void Awake()
     {
@@ -41,12 +43,14 @@ public class UIStateMachine : MonoBehaviour
 
     public void ShowStartMenu() => SwitchState(UIState.StartMenu);
 
+    public void ShowContinue() => SwitchState(UIState.Continue);
+
     public void ShowActiveGameUi()
     {
-        if (YG2.saves._isTutorialShow == false)
+        if (YG2.saves.IsTutorialShow == false)
         {
             ShowTutorial();
-            YG2.saves._isTutorialShow = true;
+            YG2.saves.IsTutorialShow = true;
         }
         else
         {
@@ -88,12 +92,15 @@ public class UIStateMachine : MonoBehaviour
         SetCanvasActive(newState, true);
     }
 
-    private void SetCanvasActive(UIState state, bool isActive) 
+    private void SetCanvasActive(UIState state, bool isActive)
     {
         switch (state)
         {
             case UIState.MainMenu:
                 _mainMenuCanvas.gameObject.SetActive(isActive);
+                break;
+            case UIState.Continue:
+                _continue.gameObject.SetActive(isActive);
                 break;
             case UIState.Settings:
                 _settingsCanvas.gameObject.SetActive(isActive);

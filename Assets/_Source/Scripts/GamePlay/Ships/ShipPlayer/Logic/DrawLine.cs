@@ -1,8 +1,7 @@
-using System.Collections.Generic;
-using UnityEngine.EventSystems;
-using UnityEngine;
 using System;
-using System.Collections; // Добавляем для использования корутин
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.EventSystems;
 
 [RequireComponent(typeof(InputPlayer))]
 public class DrawLine : MonoBehaviour
@@ -13,7 +12,6 @@ public class DrawLine : MonoBehaviour
 
     private bool _isDrawing = false;
     private bool _isOverDrawZone = false;
-    private Coroutine _clearCoroutine; // Для отслеживания корутины очистки
 
     public List<Vector3> MousePositionList { get; private set; }
     public event Action OnLineDrawn;
@@ -44,6 +42,11 @@ public class DrawLine : MonoBehaviour
         CheckDrawZone();
     }
 
+    private void OnDisable()
+    {
+        Clear();
+    }
+
     public void Init(LayerMask layerMask)
     {
         _planeLayerMask = layerMask;
@@ -60,6 +63,7 @@ public class DrawLine : MonoBehaviour
         if (!_isOverDrawZone) return;
 
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
         if (Physics.Raycast(ray, out RaycastHit hit, Mathf.Infinity, _planeLayerMask))
         {
             Vector3 hitPoint = hit.point;
@@ -74,10 +78,17 @@ public class DrawLine : MonoBehaviour
         }
     }
 
-    private void Clear()
+    public void Clear()
     {
         MousePositionList.Clear();
         _lineRenderer.positionCount = 0;
+    }
+
+    public Vector3? GetLastPoint()
+    {
+        if (MousePositionList.Count > 0)
+            return MousePositionList[MousePositionList.Count - 1];
+        return null;
     }
 
     private void CheckDrawLine()
@@ -86,12 +97,6 @@ public class DrawLine : MonoBehaviour
         {
             if (!_isDrawing && _isOverDrawZone)
             {
-                // Если есть активная корутина очистки, останавливаем её
-                if (_clearCoroutine != null)
-                {
-                    StopCoroutine(_clearCoroutine);
-                    _clearCoroutine = null;
-                }
                 Clear();
                 _isDrawing = true;
             }
@@ -101,7 +106,7 @@ public class DrawLine : MonoBehaviour
                 DrawVector();
             }
         }
-        else if (_isDrawing) // Отпустили кнопку мыши и закончили рисование
+        else if (_isDrawing)
         {
             _isDrawing = false;
 
@@ -119,22 +124,11 @@ public class DrawLine : MonoBehaviour
                 _lineRenderer.SetPosition(1, lastPoint);
 
                 OnLineDrawn?.Invoke();
-
-                // Запускаем корутину для очистки линии через 1 секунду
-                _clearCoroutine = StartCoroutine(ClearAfterDelay(1f));
             }
             else
             {
                 Clear();
             }
         }
-    }
-
-    // Корутина для очистки линии с задержкой
-    private IEnumerator ClearAfterDelay(float delay)
-    {
-        yield return new WaitForSeconds(delay);
-        Clear();
-        _clearCoroutine = null;
     }
 }

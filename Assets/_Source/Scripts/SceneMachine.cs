@@ -3,8 +3,8 @@ using UnityEngine.SceneManagement;
 
 public class SceneMachine : MonoBehaviour
 {
-    private int _sceneMenu = 0;
-    private int _sceneGame = 1;
+    private int _sceneMenu = 1;
+    private int _sceneGame = 2;
 
     public void LoadMenu()
     {

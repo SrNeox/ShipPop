@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class TryShoot : MonoBehaviour
 {
-    [SerializeField] private int _delayTime = 10;
+    [SerializeField] private int _delayTime = 3;
     [SerializeField] private int _shootTime = 3;
     [SerializeField] private float _speedScale = 0.3f;
     [SerializeField] private float _speedTransformAim = 15f;
@@ -14,14 +14,14 @@ public class TryShoot : MonoBehaviour
     private EnemyMover _enemyMover;
     private EnemyShoot _enemyShoot;
     private Transform _currnetTarget;
+    private Health _enemyHealth;
 
     private float _currentTime;
     private bool _isShootingPhase;
     private float _idleTime = 0f;
     private bool _hintShown = false;
-    private bool _hasHintCanvas = false;
+    private bool _hasHintCanvas;
 
-    public EnemyShoot EnemyShoot => _enemyShoot ??= FindObjectOfType<EnemyShoot>();
     public Player Player => _player ??= FindObjectOfType<Player>();
     public DrawLine DrawLine => _drawLine ??= FindObjectOfType<DrawLine>();
 
@@ -31,6 +31,7 @@ public class TryShoot : MonoBehaviour
 
         SetAimOnTarget(Player.transform);
         StartWaitingPhase();
+        FindAndSubscribeToEnemyHealth();
     }
 
     private void Update()
@@ -99,9 +100,8 @@ public class TryShoot : MonoBehaviour
         if (DrawLine != null)
             DrawLine.enabled = false;
 
-        if (EnemyShoot != null)
-            EnemyShoot.enabled = true;
-
+        if (_enemyShoot != null)
+            _enemyShoot.enabled = true;
 
         _idleTime = 0f;
         if (_hasHintCanvas)
@@ -119,8 +119,8 @@ public class TryShoot : MonoBehaviour
         if (DrawLine != null)
             DrawLine.enabled = true;
 
-        if (EnemyShoot != null)
-            EnemyShoot.enabled = false;
+        if (_enemyShoot != null)
+            _enemyShoot.enabled = false;
 
         _idleTime = 0f;
 
@@ -130,7 +130,6 @@ public class TryShoot : MonoBehaviour
             _hintShown = false;
         }
     }
-
 
     private void SetAimOnTarget(Transform target)
     {
@@ -144,7 +143,38 @@ public class TryShoot : MonoBehaviour
     {
         if (_aimPrefab == null || _currnetTarget == null) return;
 
-        _aimPrefab.transform.position = Vector3.Lerp(_aimPrefab.transform.position, new Vector3(_currnetTarget.transform.position.x, _aimPrefab.transform.position.y, _currnetTarget.transform.position.z), _speedTransformAim * Time.deltaTime);
-        FindObjectOfType<EnemyMover>();
+        _aimPrefab.transform.position = Vector3.Lerp(_aimPrefab.transform.position, new Vector3(_currnetTarget.position.x, _aimPrefab.transform.position.y, _currnetTarget.position.z), _speedTransformAim * Time.deltaTime);
+    }
+
+    private void FindAndSubscribeToEnemyHealth()
+    {
+        _enemyShoot = FindObjectOfType<EnemyShoot>();
+
+        if (_enemyShoot != null)
+        {
+            _enemyHealth = _enemyShoot.GetComponent<Health>();
+            if (_enemyHealth != null)
+                _enemyHealth.HealthOver += OnEnemyDie;
+        }
+    }
+
+    private void OnEnemyDie()
+    {
+        SetAimOnTarget(Player.transform);
+        StartWaitingPhase();
+
+        if (_enemyHealth != null)
+        {
+            _enemyHealth.HealthOver -= OnEnemyDie;
+            _enemyHealth = null;
+        }
+
+        FindAndSubscribeToEnemyHealth();
+    }
+
+    private void OnDestroy()
+    {
+        if (_enemyHealth != null)
+            _enemyHealth.HealthOver -= OnEnemyDie;
     }
 }

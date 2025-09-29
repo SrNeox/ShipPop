@@ -1,33 +1,38 @@
+using UnityEngine;
 using YG;
 
-public static class LocalBank
+namespace _Source.Scripts.GamePlay.StaticClass.BankResources
 {
-    private static int CurrentScoreBoss = 7;
-
-    public static int Score { get; private set; }
-
-    public static void AddScore(int countScore)
+    public static class LocalBank
     {
-        Score += countScore;
+        private static int s_currentScoreBoss = 7;
 
-        if (CurrentScoreBoss != 0)
-            CurrentScoreBoss--;
-        else
-            CurrentScoreBoss = 10;
+        public static int Score { get; private set; }
 
-    }
-
-    public static void TryChangeScore()
-    {
-        if (Score > YG2.saves.Score)
+        public static void AddScore(int countScore)
         {
-            YG2.saves.Score = Score;
-            YG2.SaveProgress();
-            YG2.SetLeaderboard("LeaderBoard", YG2.saves.Score);
+            Score += countScore;
+
+            if (s_currentScoreBoss != 0)
+                s_currentScoreBoss--;
+            else
+                s_currentScoreBoss = 10;
         }
+
+        public static void TryChangeScore()
+        {
+            if (Score > YG2.saves.Score)
+            {
+                YG2.saves.Score = Score;
+                YG2.SaveProgress();
+                YG2.SetLeaderboard("LeaderBoard", YG2.saves.Score);
+            }
+
+            ResetScore();
+        }
+
+        public static int TakeScoreBoss() => s_currentScoreBoss;
+
+        public static int ResetScore() => Score = 0;
     }
-
-    public static int TakeScoreBoss() => CurrentScoreBoss;
-
-    public static int ResetScore() => Score = 0;
 }

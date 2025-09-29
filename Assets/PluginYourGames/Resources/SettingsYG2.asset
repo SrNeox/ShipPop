@@ -358,7 +358,6 @@ MonoBehaviour:
   Localization:
     setLanguageMod: 1
   RewardedAdv:
-    rewardedAfterClosing: 1
     skipInterAdvAfterReward: 0
     labelAdvSimLabel: 0
   Storage:
@@ -367,7 +366,7 @@ MonoBehaviour:
     flush: 0
   Basic:
     platform: {fileID: 11400000, guid: c2a303d33a9fd394bae4c4b88b9a1c44, type: 2}
-    autoApplySettings: 1
+    autoApplySettings: 0
     autoPauseGame: 1
     editEventSystem: 1
     autoGRA: 0
@@ -402,7 +401,10 @@ MonoBehaviour:
       color2: {r: 1, g: 0.831, b: 0.149, a: 0.7}
     fixedAspectRatio: 0
     aspectRatio: 16/9
+    disableForMobile: 1
     fillBackground: 0
+    imageBackground: 0
+    imageName: background.jpg
     gradientBackgroundByAspectRatio:
       radial: 0
       angleInclination: 140
@@ -420,13 +422,14 @@ MonoBehaviour:
     skipInterAdvAfterReward: 0
     saveLocal: 0
     saveCloud: 0
+    autoPauseGame: 0
     selectWebGLTemplate: 1
     runInBackground: 0
     enableExceptions: 0
     compressionFormat: 0
     decompressionFallback: 0
     autoGraphicsAPI: 0
-    minimalCodeCompression: 0
+    managedStrippingLevel: 1
     dataCaching: 0
     colorSpace: 0
     archivingBuild: 0

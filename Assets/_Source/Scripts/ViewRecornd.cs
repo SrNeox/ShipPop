@@ -9,5 +9,6 @@ public class ViewRecornd : MonoBehaviour
     private void Awake()
     {
         _text.SetText($"{YG2.saves.Score}");
+        Debug.Log($"{YG2.saves.Score}");
     }
 }

@@ -24,6 +24,5 @@ public class GameOver : MonoBehaviour
     {
         _stateMachine.ShowGameOver();
         SetHealthPlayer(_helathPlayer);
-        LocalBank.TryChangeScore();
     }
 }

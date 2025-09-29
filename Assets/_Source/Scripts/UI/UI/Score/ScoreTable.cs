@@ -1,3 +1,4 @@
+using _Source.Scripts.GamePlay.StaticClass.BankResources;
 using TMPro;
 using UnityEngine;
 
@@ -7,15 +8,9 @@ public class ScoreTable : MonoBehaviour
 
     private Health _health;
 
-    private void Awake()
-    {
-        LocalBank.ResetScore();
-    }
-
     private void OnEnable()
     {
-        Debug.Log("Отработал на гейм овер");
-        UpdateScoreText();
+        UpdateScoreText(); 
 
         if (_health != null)
             _health.HealthOver += UpdateScoreText;

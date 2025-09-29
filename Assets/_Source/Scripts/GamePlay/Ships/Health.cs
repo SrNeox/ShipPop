@@ -34,10 +34,7 @@ public class Health : MonoBehaviour
 
     private void Die()
     {
-        if (CurrentHealth <= 0)
-        {
-            HealthOver?.Invoke();
-        }
+        HealthOver?.Invoke();
     }
 
     public void RestoreHealth(float health)
@@ -57,7 +54,7 @@ public class Health : MonoBehaviour
 
     public void Init(float valueHealth, float maxHealth)
     {
-        CurrentHealth = valueHealth;
+        CurrentHealth = Mathf.Max(1, valueHealth);
         MaxHealth = maxHealth;
     }
 }

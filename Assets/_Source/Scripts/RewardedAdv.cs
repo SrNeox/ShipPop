@@ -14,7 +14,6 @@ public class RewardedAdv : MonoBehaviour
 
     public string rewardID;
 
-
     private void Start()
     {
         _rewardedButton = GetComponent<Button>();
@@ -30,9 +29,11 @@ public class RewardedAdv : MonoBehaviour
     {
         YG2.RewardedAdvShow(rewardID, () =>
         {
+            StateGame.ResumeGame();
+
             _bulletPool.ReaturnAllObject();
             _playerHealth.SetHealth();
-            _stateMachineUi.ShowActiveGameUi();
+            _stateMachineUi.ShowContinue();
             _rewardedButton.gameObject.SetActive(false);
         });
     }

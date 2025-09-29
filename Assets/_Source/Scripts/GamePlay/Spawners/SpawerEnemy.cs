@@ -1,3 +1,4 @@
+using _Source.Scripts.GamePlay.StaticClass.BankResources;
 using Reflex.Attributes;
 using Reflex.Core;
 using Reflex.Injectors;

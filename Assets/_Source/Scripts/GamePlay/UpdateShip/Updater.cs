@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using _Source.Scripts.GamePlay.StaticClass.BankResources;
 using UnityEngine;
 using UnityEngine.UI;
 

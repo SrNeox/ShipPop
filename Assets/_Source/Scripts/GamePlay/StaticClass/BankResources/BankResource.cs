@@ -1,15 +1,18 @@
-public static class BankResource
+namespace _Source.Scripts.GamePlay.StaticClass.BankResources
 {
-    public static int Score { get; private set; }
-    public static int Coin { get; private set; }
-
-    public static void ChangeScore(int countScore)
+    public static class BankResource
     {
-        Score += countScore;
-    }
+        public static int Score { get; private set; }
+        public static int Coin { get; private set; }
 
-    public static void AddCoin(int coin)
-    {
-        Coin += coin;
+        public static void ChangeScore(int countScore)
+        {
+            Score += countScore;
+        }
+
+        public static void AddCoin(int coin)
+        {
+            Coin += coin;
+        }
     }
 }

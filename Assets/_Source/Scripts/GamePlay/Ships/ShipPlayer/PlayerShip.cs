@@ -19,7 +19,7 @@ public class PlayerShip : MonoBehaviour
     private Health _health;
     private AudioSource _audioSource;
 
-    private float _valueHealth;
+    private float _valueHealth = 1;
     private float _maxHealth;
     private float _speed;
     private float _shootDelay;
